@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumen</title>
+    <style>
+        /* Opsional: Styling dasar agar tampilan lebih baik */
+        form {
+            margin-bottom: 20px;
+        }
+        label, input, select, textarea, button {
+            margin: 5px;
+        }
+        button {
+            padding: 5px 10px;
+        }
+        div {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <form id="diskonForm">
+        <label for="harga">Harga Produk: </label>
+        <input type="number" id="harga" name="harga" required>
+        <br><br>
+        <label for="diskon">Diskon (%): </label>
+        <input type="number" id="diskon" name="diskon" required>
+        <br><br>
+        <button type="button" onclick="hitung()">Hitung</button>
+    </form>
+    <div id="hasil"></div>
+
+    <br><br>
+
+    <form id="suhuForm">
+        <label for="suhu">Suhu: </label>
+        <input type="number" id="suhu" name="suhu" required>
+        <br><br>
+        <label for="jenis">Jenis Suhu: </label>
+        <select id="jenis" name="jenis">
+            <option value="celsius">Celcius</option>
+            <option value="fahrenheit">Fahrenheit</option>
+            <option value="kelvin">Kelvin</option>
+            <option value="reamur">Reamur</option>
+        </select>
+        <br><br>
+        <button type="button" onclick="tampilkanSuhu()">Konversi</button>
+    </form>
+    <div id="hasilSuhu"></div>
+
+    <br><br>
+
+    <form id="kalkulatorForm">
+        <label for="angka1">Angka 1:</label>
+        <input type="number" id="angka1" name="angka1" required><br><br>
+        <label for="simbol">Simbol:</label>
+        <select id="simbol" name="simbol">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select><br><br>
+        <label for="angka2">Angka 2:</label>
+        <input type="number" id="angka2" name="angka2" required><br><br>
+        <button type="button" onclick="tampilkanHasil()">Hitung</button>
+    </form>
+    <div id="hasilKalkulator"></div>
+
+    <br><br>
+
+    <form id="ktpForm">
+        <label for="nama">Nama:</label>
+        <input type="text" id="nama" name="nama" required><br><br>
+        <label for="tanggalLahir">Tanggal Lahir:</label>
+        <input type="date" id="tanggalLahir" name="tanggalLahir" required><br><br>
+        <label for="jenisKelamin">Jenis Kelamin:</label>
+        <select id="jenisKelamin" name="jenisKelamin">
+            <option value="Laki-laki">Laki-laki</option>
+            <option value="Perempuan">Perempuan</option>
+        </select><br><br>
+        <label for="alamat">Alamat:</label>
+        <textarea id="alamat" name="alamat" required></textarea><br><br>
+        <label for="agama">Agama:</label>
+        <select id="agama" name="agama">
+            <option value="Islam">Islam</option>
+            <option value="Kristen">Kristen</option>
+            <option value="Katolik">Katolik</option>
+            <option value="Hindu">Hindu</option>
+            <option value="Buddha">Buddha</option>
+        </select><br><br>
+        <label for="pekerjaan">Pekerjaan:</label>
+        <input type="text" id="pekerjaan" name="pekerjaan" required><br><br>
+        <button type="button" onclick="tampilkanDataKTP()">Tampilkan</button>
+    </form>
+    <div id="ktp"></div>
+
+    <script>
+        function hitungDiskon(harga, diskon) {
+            let jumlahDiskon = (harga * diskon) / 100;
+            let totalBayar = harga - jumlahDiskon;
+            return {
+                jumlahDiskon: jumlahDiskon,
+                totalBayar: totalBayar
+            };
+        }
+
+        function hitung() {
+            let harga = parseFloat(document.getElementById('harga').value);
+            let diskon = parseFloat(document.getElementById('diskon').value);
+
+            if (isNaN(harga) || isNaN(diskon)) {
+                document.getElementById('hasil').innerHTML = 'Mohon masukkan angka yang valid.';
+                return;
+            }
+
+            let hasil = hitungDiskon(harga, diskon);
+
+            document.getElementById('hasil').innerHTML = `
+                <p>Harga Produk: Rp. ${harga}</p>
+                <p>Diskon: ${diskon}%</p>
+                <p>Jumlah Diskon: Rp. ${hasil.jumlahDiskon}</p>
+                <p>Total Bayar: Rp. ${hasil.totalBayar}</p>`;
+        }
+
+        function konversiSuhu(suhu, jenis) {
+            let hasil;
+            if (jenis === 'celsius') {
+                hasil = (suhu * 9/5) + 32;
+                return `Suhu dalam Fahrenheit: ${hasil.toFixed(2)}°F`;
+            } else if (jenis === 'fahrenheit') {
+                hasil = (suhu - 32) * 5/9;
+                return `Suhu dalam Celcius: ${hasil.toFixed(2)}°C`;
+            } else if (jenis === 'kelvin') {
+                hasil = suhu + 273.15;
+                return `Suhu dalam Kelvin: ${hasil.toFixed(2)}K`;
+            } else if (jenis === 'reamur') {
+                hasil = suhu * 4/5;
+                return `Suhu dalam Reamur: ${hasil.toFixed(2)}°Ré`;
+            } else {
+                return 'Jenis suhu tidak valid';
+            }
+        }
+
+        function tampilkanSuhu() {
+            let suhu = parseFloat(document.getElementById('suhu').value);
+            let jenis = document.getElementById('jenis').value;
+
+            if (isNaN(suhu)) {
+                document.getElementById('hasilSuhu').innerHTML = 'Mohon masukkan suhu yang valid.';
+                return;
+            }
+
+            let hasil = konversiSuhu(suhu, jenis);
+
+            document.getElementById('hasilSuhu').innerHTML = hasil;
+        }
+
+        function tampilkanHasil() {
+            var angka1 = parseFloat(document.getElementById("angka1").value);
+            var angka2 = parseFloat(document.getElementById("angka2").value);
+            var simbol = document.getElementById("simbol").value;
+
+            if (isNaN(angka1) || isNaN(angka2)) {
+                document.getElementById("hasilKalkulator").innerHTML = 'Mohon masukkan angka yang valid.';
+                return;
+            }
+
+            var hasil;
+            switch (simbol) {
+                case "+":
+                    hasil = angka1 + angka2;
+                    break;
+                case "-":
+                    hasil = angka1 - angka2;
+                    break;
+                case "*":
+                    hasil = angka1 * angka2;
+                    break;
+                case "/":
+                    if (angka2 === 0) {
+                        document.getElementById("hasilKalkulator").innerHTML = 'Pembagian dengan nol tidak diperbolehkan.';
+                        return;
+                    }
+                    hasil = angka1 / angka2;
+                    break;
+                default:
+                    hasil = "Operasi tidak valid";
+            }
+
+            document.getElementById("hasilKalkulator").innerHTML = `Hasil: ${hasil.toFixed(2)}`;
+        }
+
+        function tampilkanDataKTP() {
+            var nama = document.getElementById("nama").value;
+            var tanggalLahir = document.getElementById("tanggalLahir").value;
+            var jenisKelamin = document.getElementById("jenisKelamin").value;
+            var alamat = document.getElementById("alamat").value;
+            var agama = document.getElementById("agama").value;
+            var pekerjaan = document.getElementById("pekerjaan").value;
+
+            if (!nama || !tanggalLahir || !alamat || !pekerjaan) {
+                document.getElementById("ktp").innerHTML = 'Mohon lengkapi semua bidang.';
+                return;
+            }
+
+            var dataKTP = `
+                <h2>Data KTP</h2>
+                <p>Nama: ${nama}</p>
+                <p>Tanggal Lahir: ${tanggalLahir}</p>
+                <p>Jenis Kelamin: ${jenisKelamin}</p>
+                <p>Alamat: ${alamat}</p>
+                <p>Agama: ${agama}</p>
+                <p>Pekerjaan: ${pekerjaan}</p>
+            `;
+
+            document.getElementById("ktp").innerHTML = dataKTP;
+        }
+    </script>
+</body>
+</html>
